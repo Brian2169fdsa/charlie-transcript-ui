@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Meeting Transcript - Charlie</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      color: #1E293B;
+      background: #FFFFFF;
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .header {
+      background: #1E3348;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 56px;
+    }
+    .header-logo {
+      color: #FFFFFF;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .header-label {
+      color: #7A8B9A;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    /* ── Page ── */
+    .page { max-width: 680px; margin: 0 auto; padding: 40px 24px 60px; }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1E293B;
+      margin-bottom: 6px;
+    }
+    .page-subtitle {
+      font-size: 14px;
+      color: #475569;
+      margin-bottom: 32px;
+    }
+
+    /* ── Card ── */
+    .card {
+      border: 1px solid #E2E6EC;
+      border-radius: 10px;
+      padding: 28px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1E293B;
+      margin-bottom: 6px;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    textarea {
+      width: 100%;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 500;
+      font-size: 14px;
+      color: #1E293B;
+      border: 1px solid #E2E6EC;
+      border-radius: 10px;
+      padding: 10px 14px;
+      background: #FFFFFF;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input[type="text"]:focus,
+    input[type="date"]:focus,
+    textarea:focus {
+      border-color: #4A8FD6;
+    }
+
+    textarea {
+      min-height: 240px;
+      resize: vertical;
+      line-height: 1.6;
+    }
+
+    .field + .field { margin-top: 20px; }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .hint {
+      font-size: 12px;
+      color: #7A8B9A;
+      margin-top: 4px;
+    }
+
+    /* ── Button ── */
+    .btn-submit {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      padding: 11px 28px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 14px;
+      color: #FFFFFF;
+      background: #4A8FD6;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: opacity 0.15s;
+    }
+    .btn-submit:hover { opacity: 0.9; }
+    .btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    .btn-submit svg { flex-shrink: 0; }
+
+    /* ── Progress ── */
+    .progress {
+      margin-top: 28px;
+      border: 1px solid #E2E6EC;
+      border-radius: 10px;
+      padding: 24px 28px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      display: none;
+    }
+    .progress.visible { display: block; }
+
+    .progress-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .spinner {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+    .spinner circle {
+      fill: none;
+      stroke-width: 3;
+      stroke-linecap: round;
+    }
+    .spinner .track { stroke: #E2E6EC; }
+    .spinner .arc {
+      stroke: #4A8FD6;
+      stroke-dasharray: 50 100;
+      animation: spin 0.8s linear infinite;
+      transform-origin: center;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .progress-text {
+      font-size: 14px;
+      font-weight: 500;
+      color: #1E293B;
+    }
+
+    .progress-timer {
+      font-size: 13px;
+      color: #7A8B9A;
+      margin-top: 10px;
+    }
+
+    .progress-detail {
+      font-size: 13px;
+      color: #475569;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* States */
+    .progress.success .spinner { display: none; }
+    .progress.success .progress-text { color: #16A34A; }
+    .progress.success { border-color: #16A34A; background: #E8F8EE; }
+
+    .progress.error .spinner { display: none; }
+    .progress.error .progress-text { color: #DC2626; }
+    .progress.error { border-color: #DC2626; }
+
+    .icon-result {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      display: none;
+    }
+    .progress.success .icon-result.icon-check { display: block; }
+    .progress.error .icon-result.icon-error { display: block; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <span class="header-logo">Manage AI</span>
+    <span class="header-label">Charlie</span>
+  </div>
+
+  <!-- Page -->
+  <div class="page">
+    <h1 class="page-title">Upload Meeting Transcript</h1>
+    <p class="page-subtitle">Submit a discovery or alignment session transcript for Charlie to process</p>
+
+    <!-- Form Card -->
+    <form id="uploadForm" class="card">
+      <div class="row">
+        <div class="field">
+          <label for="customerName">Customer Name</label>
+          <input type="text" id="customerName" name="customerName" required placeholder="e.g. Acme Corp">
+        </div>
+        <div class="field">
+          <label for="sessionDate">Session Date</label>
+          <input type="date" id="sessionDate" name="sessionDate" required>
+        </div>
+      </div>
+
+      <div class="field" style="margin-top:20px">
+        <label for="transcript">Transcript</label>
+        <textarea id="transcript" name="transcript" required placeholder="Paste the full meeting transcript here..."></textarea>
+        <p class="hint">Plain text from Teams, Zoom, or any transcription service</p>
+      </div>
+
+      <button type="submit" class="btn-submit" id="submitBtn">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 1v10M8 1L4.5 4.5M8 1l3.5 3.5M2 11v2.5A1.5 1.5 0 003.5 15h9a1.5 1.5 0 001.5-1.5V11" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Upload Transcript
+      </button>
+    </form>
+
+    <!-- Progress -->
+    <div id="progress" class="progress">
+      <div class="progress-row">
+        <svg class="spinner" viewBox="0 0 24 24">
+          <circle class="track" cx="12" cy="12" r="10"/>
+          <circle class="arc" cx="12" cy="12" r="10"/>
+        </svg>
+        <!-- Check icon -->
+        <svg class="icon-result icon-check" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="11" fill="#16A34A"/>
+          <path d="M6.5 11.5l2.5 2.5 6-6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <!-- Error icon -->
+        <svg class="icon-result icon-error" viewBox="0 0 22 22" fill="none">
+          <circle cx="11" cy="11" r="11" fill="#DC2626"/>
+          <path d="M7.5 7.5l7 7M14.5 7.5l-7 7" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span id="progressText" class="progress-text">Uploading transcript...</span>
+      </div>
+      <div id="progressTimer" class="progress-timer"></div>
+      <div id="progressDetail" class="progress-detail"></div>
+    </div>
+  </div>
+
+  <script>
+    const POLL_INTERVAL = 3000;
+
+    const form = document.getElementById('uploadForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const progressEl = document.getElementById('progress');
+    const progressText = document.getElementById('progressText');
+    const progressTimer = document.getElementById('progressTimer');
+    const progressDetail = document.getElementById('progressDetail');
+
+    let timerInterval = null;
+    let startTime = null;
+
+    function updateTimer() {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      progressTimer.textContent = 'Elapsed: ' + elapsed + 's';
+    }
+
+    function showProgress(msg, detail) {
+      progressEl.classList.add('visible');
+      progressEl.classList.remove('success', 'error');
+      progressText.textContent = msg;
+      progressDetail.textContent = detail || '';
+    }
+
+    function showSuccess(msg, detail) {
+      clearInterval(timerInterval);
+      updateTimer();
+      progressEl.classList.add('success');
+      progressText.textContent = msg;
+      progressDetail.textContent = detail || '';
+      submitBtn.disabled = false;
+    }
+
+    function showError(msg, detail) {
+      clearInterval(timerInterval);
+      updateTimer();
+      progressEl.classList.add('error');
+      progressText.textContent = msg;
+      progressDetail.textContent = detail || '';
+      submitBtn.disabled = false;
+    }
+
+    // All API calls go through the Vercel serverless proxy — no key in the browser
+    async function proxy(endpoint, body) {
+      const res = await fetch('/api/proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ endpoint, body })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Request failed (' + res.status + ')');
+      return data;
+    }
+
+    function pollStatus(documentId) {
+      const poll = setInterval(async () => {
+        try {
+          const data = await proxy('/api/charlie/document-status/' + documentId);
+          const status = data.extraction_status || 'unknown';
+
+          if (status === 'complete') {
+            clearInterval(poll);
+            showSuccess(
+              'Extraction complete',
+              (data.facts || 0) + ' facts and ' + (data.actions || 0) + ' action items extracted'
+            );
+          } else if (status === 'error' || status === 'failed') {
+            clearInterval(poll);
+            showError('Extraction failed', data.error || 'An error occurred during processing');
+          } else {
+            showProgress('Processing transcript...', 'Status: ' + status);
+          }
+        } catch (err) {
+          showProgress('Processing transcript...', 'Waiting for status update...');
+        }
+      }, POLL_INTERVAL);
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const customerName = document.getElementById('customerName').value.trim();
+      const sessionDate = document.getElementById('sessionDate').value;
+      const transcript = document.getElementById('transcript').value.trim();
+
+      if (!customerName || !sessionDate || !transcript) return;
+
+      submitBtn.disabled = true;
+      startTime = Date.now();
+      timerInterval = setInterval(updateTimer, 1000);
+      updateTimer();
+
+      showProgress('Uploading transcript...', 'Inserting document record');
+
+      try {
+        // Step 1: Insert transcript into knowledge_documents
+        const insertResult = await proxy('/api/charlie/upload-transcript', {
+          customer_name: customerName,
+          session_date: sessionDate,
+          content: transcript
+        });
+
+        const documentId = insertResult.document_id;
+        if (!documentId) throw new Error('No document_id returned from upload');
+
+        showProgress('Document created', 'Starting extraction...');
+
+        // Step 2: Call extract with the returned document_id
+        await proxy('/api/charlie/extract', { document_id: documentId });
+
+        // Step 3: Poll for completion
+        showProgress('Processing transcript...', 'Charlie is extracting facts and action items');
+        pollStatus(documentId);
+
+      } catch (err) {
+        showError('Upload failed', err.message);
+      }
+    });
+
+    // Default session date to today
+    document.getElementById('sessionDate').valueAsDate = new Date();
+  </script>
+</body>
+</html>
