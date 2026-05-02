@@ -73,7 +73,8 @@
 
     input[type="text"],
     input[type="date"],
-    textarea {
+    textarea,
+    select {
       width: 100%;
       font-family: 'Montserrat', sans-serif;
       font-weight: 500;
@@ -85,11 +86,20 @@
       background: #FFFFFF;
       outline: none;
       transition: border-color 0.15s;
+      -webkit-appearance: none;
     }
     input[type="text"]:focus,
     input[type="date"]:focus,
-    textarea:focus {
+    textarea:focus,
+    select:focus {
       border-color: #4A8FD6;
+    }
+
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%237A8B9A' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
     }
 
     textarea {
@@ -103,6 +113,11 @@
     .row {
       display: grid;
       grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .row-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
       gap: 16px;
     }
 
@@ -191,6 +206,12 @@
       line-height: 1.5;
     }
 
+    .progress-meta {
+      font-size: 12px;
+      color: #7A8B9A;
+      margin-top: 6px;
+    }
+
     /* States */
     .progress.success .spinner { display: none; }
     .progress.success .progress-text { color: #16A34A; }
@@ -208,6 +229,85 @@
     }
     .progress.success .icon-result.icon-check { display: block; }
     .progress.error .icon-result.icon-error { display: block; }
+
+    /* ── Workflow Status ── */
+    .workflow-status {
+      margin-top: 16px;
+      border: 1px solid #E2E6EC;
+      border-radius: 10px;
+      padding: 24px 28px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      display: none;
+    }
+    .workflow-status.visible { display: block; }
+
+    .workflow-status .wf-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .workflow-status .wf-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1E293B;
+    }
+
+    .workflow-status .wf-step {
+      font-size: 14px;
+      font-weight: 500;
+      color: #475569;
+      margin-top: 10px;
+    }
+
+    .workflow-status .wf-timer {
+      font-size: 13px;
+      color: #7A8B9A;
+      margin-top: 6px;
+    }
+
+    .workflow-status .wf-id {
+      font-size: 12px;
+      color: #7A8B9A;
+      margin-top: 8px;
+      word-break: break-all;
+    }
+
+    .workflow-status.wf-complete {
+      border-color: #16A34A;
+      background: #E8F8EE;
+    }
+    .workflow-status.wf-complete .wf-title { color: #16A34A; }
+
+    .workflow-status.wf-error {
+      border-color: #DC2626;
+    }
+    .workflow-status.wf-error .wf-title { color: #DC2626; }
+
+    /* ── Action Buttons ── */
+    .wf-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .btn-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 20px;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      color: #4A8FD6;
+      background: #FFFFFF;
+      border: 1px solid #4A8FD6;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .btn-action:hover { background: #EBF3FC; }
+    .btn-action svg { flex-shrink: 0; }
   </style>
 </head>
 <body>
@@ -225,7 +325,7 @@
 
     <!-- Form Card -->
     <form id="uploadForm" class="card">
-      <div class="row">
+      <div class="row-3">
         <div class="field">
           <label for="customerName">Customer Name</label>
           <input type="text" id="customerName" name="customerName" required placeholder="e.g. Acme Corp">
@@ -233,6 +333,17 @@
         <div class="field">
           <label for="sessionDate">Session Date</label>
           <input type="date" id="sessionDate" name="sessionDate" required>
+        </div>
+        <div class="field">
+          <label for="stage">Stage</label>
+          <select id="stage" name="stage" required>
+            <option value="Discovery Call">Discovery Call</option>
+            <option value="Alignment Session">Alignment Session</option>
+            <option value="Prototype Review">Prototype Review</option>
+            <option value="Go-to-Market">Go-to-Market</option>
+            <option value="Product Meeting">Product Meeting</option>
+            <option value="Internal">Internal</option>
+          </select>
         </div>
       </div>
 
@@ -250,19 +361,17 @@
       </button>
     </form>
 
-    <!-- Progress -->
+    <!-- Extraction Progress -->
     <div id="progress" class="progress">
       <div class="progress-row">
         <svg class="spinner" viewBox="0 0 24 24">
           <circle class="track" cx="12" cy="12" r="10"/>
           <circle class="arc" cx="12" cy="12" r="10"/>
         </svg>
-        <!-- Check icon -->
         <svg class="icon-result icon-check" viewBox="0 0 22 22" fill="none">
           <circle cx="11" cy="11" r="11" fill="#16A34A"/>
           <path d="M6.5 11.5l2.5 2.5 6-6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
-        <!-- Error icon -->
         <svg class="icon-result icon-error" viewBox="0 0 22 22" fill="none">
           <circle cx="11" cy="11" r="11" fill="#DC2626"/>
           <path d="M7.5 7.5l7 7M14.5 7.5l-7 7" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -271,6 +380,31 @@
       </div>
       <div id="progressTimer" class="progress-timer"></div>
       <div id="progressDetail" class="progress-detail"></div>
+      <div id="progressMeta" class="progress-meta"></div>
+    </div>
+
+    <!-- Workflow Status -->
+    <div id="workflowStatus" class="workflow-status">
+      <div class="wf-header">
+        <svg class="spinner" viewBox="0 0 24 24">
+          <circle class="track" cx="12" cy="12" r="10"/>
+          <circle class="arc" cx="12" cy="12" r="10"/>
+        </svg>
+        <span id="wfTitle" class="wf-title">Starting workflow...</span>
+      </div>
+      <div id="wfStep" class="wf-step"></div>
+      <div id="wfTimer" class="wf-timer"></div>
+      <div id="wfId" class="wf-id"></div>
+      <div id="wfActions" class="wf-actions" style="display:none">
+        <a id="btnGithub" class="btn-action" href="#" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.1 2.01 5.73 4.79 6.65.35.06.48-.15.48-.34 0-.17-.01-.71-.01-1.29-1.95.42-2.36-.84-2.36-.84-.32-.81-.78-1.03-.78-1.03-.64-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.63 1.07 1.64.76 2.04.58.06-.45.24-.76.44-.93-1.56-.18-3.2-.78-3.2-3.46 0-.76.27-1.39.72-1.88-.07-.18-.31-.89.07-1.85 0 0 .59-.19 1.93.72a6.7 6.7 0 013.5 0c1.34-.91 1.93-.72 1.93-.72.38.96.14 1.67.07 1.85.45.49.72 1.12.72 1.88 0 2.69-1.64 3.28-3.2 3.46.25.22.48.64.48 1.29 0 .93-.01 1.68-.01 1.91 0 .19.13.41.48.34A7.01 7.01 0 0015 8c0-3.87-3.13-7-7-7z" fill="#4A8FD6"/></svg>
+          View in GitHub
+        </a>
+        <a id="btnOnedrive" class="btn-action" href="#" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 11l3-5h5l3 5H2z" stroke="#4A8FD6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 6L7 3h5l2 3" stroke="#4A8FD6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          View in OneDrive
+        </a>
+      </div>
     </div>
   </div>
 
@@ -283,29 +417,67 @@
     const progressText = document.getElementById('progressText');
     const progressTimer = document.getElementById('progressTimer');
     const progressDetail = document.getElementById('progressDetail');
+    const progressMeta = document.getElementById('progressMeta');
+
+    const wfEl = document.getElementById('workflowStatus');
+    const wfTitle = document.getElementById('wfTitle');
+    const wfStep = document.getElementById('wfStep');
+    const wfTimer = document.getElementById('wfTimer');
+    const wfId = document.getElementById('wfId');
+    const wfActions = document.getElementById('wfActions');
 
     let timerInterval = null;
     let startTime = null;
+    let wfTimerInterval = null;
+    let wfStartTime = null;
+
+    // Workflow step names by number
+    const STEP_NAMES = {
+      1: 'Customer Dossier',
+      2: 'Feasibility Analysis',
+      3: 'Gap Report',
+      4: 'AI Vision',
+      5: 'Opportunity Roadmap',
+      6: 'Signal Synthesis',
+      7: 'Process Mapping',
+      8: 'Meeting Prep',
+      9: 'Action Item Capture',
+      10: 'Prototype Readiness',
+      11: 'Prototype Brief',
+      12: 'Prototype Brief Review',
+      13: 'Assemble Brief',
+      14: 'Confidence Scoring',
+      15: 'Scope Freeze',
+      16: 'Handoff to FRIDAY'
+    };
 
     function updateTimer() {
-      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      var elapsed = Math.floor((Date.now() - startTime) / 1000);
       progressTimer.textContent = 'Elapsed: ' + elapsed + 's';
     }
 
-    function showProgress(msg, detail) {
+    function updateWfTimer() {
+      var elapsed = Math.floor((Date.now() - wfStartTime) / 1000);
+      var min = Math.floor(elapsed / 60);
+      var sec = elapsed % 60;
+      wfTimer.textContent = 'Workflow elapsed: ' + (min > 0 ? min + 'm ' : '') + sec + 's';
+    }
+
+    function showProgress(msg, detail, meta) {
       progressEl.classList.add('visible');
       progressEl.classList.remove('success', 'error');
       progressText.textContent = msg;
       progressDetail.textContent = detail || '';
+      progressMeta.textContent = meta || '';
     }
 
-    function showSuccess(msg, detail) {
+    function showSuccess(msg, detail, meta) {
       clearInterval(timerInterval);
       updateTimer();
       progressEl.classList.add('success');
       progressText.textContent = msg;
       progressDetail.textContent = detail || '';
-      submitBtn.disabled = false;
+      progressMeta.textContent = meta || '';
     }
 
     function showError(msg, detail) {
@@ -317,48 +489,126 @@
       submitBtn.disabled = false;
     }
 
-    // All API calls go through the Vercel serverless proxy — no key in the browser
+    // All API calls go through the Vercel serverless proxy
     async function proxy(endpoint, body) {
-      const res = await fetch('/api/proxy', {
+      var res = await fetch('/api/proxy', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ endpoint, body })
+        body: JSON.stringify({ endpoint: endpoint, body: body })
       });
-      const data = await res.json();
+      var data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Request failed (' + res.status + ')');
       return data;
     }
 
-    function pollStatus(documentId) {
-      const poll = setInterval(async () => {
+    function pollDocStatus(documentId, customerName, stage) {
+      var poll = setInterval(async function() {
         try {
-          const data = await proxy('/api/charlie/document-status/' + documentId);
-          const status = data.extraction_status || 'unknown';
+          var data = await proxy('/api/charlie/document-status/' + documentId);
+          var status = data.extraction_status || 'unknown';
 
           if (status === 'complete') {
             clearInterval(poll);
             showSuccess(
               'Extraction complete',
-              (data.facts || 0) + ' facts and ' + (data.actions || 0) + ' action items extracted'
+              (data.facts || 0) + ' facts and ' + (data.actions || 0) + ' action items extracted',
+              'Stage: ' + stage
             );
+            // Auto-start workflow
+            startWorkflow(customerName);
           } else if (status === 'error' || status === 'failed') {
             clearInterval(poll);
             showError('Extraction failed', data.error || 'An error occurred during processing');
           } else {
-            showProgress('Processing transcript...', 'Status: ' + status);
+            showProgress('Processing transcript...', 'Status: ' + status, 'Stage: ' + stage);
           }
         } catch (err) {
-          showProgress('Processing transcript...', 'Waiting for status update...');
+          showProgress('Processing transcript...', 'Waiting for status update...', 'Stage: ' + stage);
         }
       }, POLL_INTERVAL);
     }
 
-    form.addEventListener('submit', async (e) => {
+    async function startWorkflow(customerName) {
+      wfEl.classList.add('visible');
+      wfEl.classList.remove('wf-complete', 'wf-error');
+      wfTitle.textContent = 'Starting workflow...';
+      wfStep.textContent = '';
+      wfActions.style.display = 'none';
+      wfStartTime = Date.now();
+      wfTimerInterval = setInterval(updateWfTimer, 1000);
+      updateWfTimer();
+
+      try {
+        var result = await proxy('/api/charlie/workflow/start', {
+          customerId: '882d9329-4e05-4467-8773-27dc2ce5db48',
+          clientName: customerName,
+          themeId: null,
+          mode: 'roadmap-first'
+        });
+
+        var workflowId = result.workflowId;
+        if (!workflowId) throw new Error('No workflowId returned');
+
+        wfTitle.textContent = 'Workflow running';
+        wfId.textContent = 'ID: ' + workflowId;
+        pollWorkflowStatus(workflowId);
+
+      } catch (err) {
+        clearInterval(wfTimerInterval);
+        wfEl.classList.add('wf-error');
+        wfTitle.textContent = 'Workflow failed to start';
+        wfStep.textContent = err.message;
+        submitBtn.disabled = false;
+      }
+    }
+
+    function pollWorkflowStatus(workflowId) {
+      var poll = setInterval(async function() {
+        try {
+          var data = await proxy('/api/charlie/workflow/status/' + workflowId);
+          var status = data.status || 'UNKNOWN';
+
+          if (status === 'COMPLETED') {
+            clearInterval(poll);
+            clearInterval(wfTimerInterval);
+            updateWfTimer();
+            wfEl.classList.add('wf-complete');
+            wfEl.querySelector('.spinner').style.display = 'none';
+            wfTitle.textContent = 'Workflow complete';
+            wfStep.textContent = 'All 16 steps finished';
+            wfActions.style.display = 'flex';
+            submitBtn.disabled = false;
+          } else if (status === 'FAILED' || status === 'TERMINATED' || status === 'CANCELLED') {
+            clearInterval(poll);
+            clearInterval(wfTimerInterval);
+            updateWfTimer();
+            wfEl.classList.add('wf-error');
+            wfEl.querySelector('.spinner').style.display = 'none';
+            wfTitle.textContent = 'Workflow ' + status.toLowerCase();
+            submitBtn.disabled = false;
+          } else {
+            wfTitle.textContent = 'Workflow running';
+            // Try to parse step info from status if available
+            if (data.currentStep) {
+              var stepName = STEP_NAMES[data.currentStep] || 'Step ' + data.currentStep;
+              wfStep.textContent = 'Step ' + data.currentStep + ' of 16: ' + stepName;
+            } else {
+              wfStep.textContent = 'Status: ' + status;
+            }
+          }
+        } catch (err) {
+          wfStep.textContent = 'Polling...';
+        }
+      }, POLL_INTERVAL);
+    }
+
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      const customerName = document.getElementById('customerName').value.trim();
-      const sessionDate = document.getElementById('sessionDate').value;
-      const transcript = document.getElementById('transcript').value.trim();
+      var customerName = document.getElementById('customerName').value.trim();
+      var sessionDate = document.getElementById('sessionDate').value;
+      var stage = document.getElementById('stage').value;
+      var transcript = document.getElementById('transcript').value.trim();
 
       if (!customerName || !sessionDate || !transcript) return;
 
@@ -367,27 +617,31 @@
       timerInterval = setInterval(updateTimer, 1000);
       updateTimer();
 
-      showProgress('Uploading transcript...', 'Inserting document record');
+      // Reset workflow section
+      wfEl.classList.remove('visible', 'wf-complete', 'wf-error');
+      wfEl.querySelector('.spinner').style.display = '';
+
+      showProgress('Uploading transcript...', 'Inserting document record', 'Stage: ' + stage);
 
       try {
         // Step 1: Insert transcript into knowledge_documents
-        const insertResult = await proxy('/api/charlie/upload-transcript', {
+        var insertResult = await proxy('/api/charlie/upload-transcript', {
           customer_name: customerName,
           session_date: sessionDate,
           content: transcript
         });
 
-        const documentId = insertResult.document_id;
+        var documentId = insertResult.document_id;
         if (!documentId) throw new Error('No document_id returned from upload');
 
-        showProgress('Document created', 'Starting extraction...');
+        showProgress('Document created', 'Starting extraction...', 'Stage: ' + stage);
 
         // Step 2: Call extract with the returned document_id
         await proxy('/api/charlie/extract', { document_id: documentId });
 
-        // Step 3: Poll for completion
-        showProgress('Processing transcript...', 'Charlie is extracting facts and action items');
-        pollStatus(documentId);
+        // Step 3: Poll for extraction completion, then auto-start workflow
+        showProgress('Processing transcript...', 'Charlie is extracting facts and action items', 'Stage: ' + stage);
+        pollDocStatus(documentId, customerName, stage);
 
       } catch (err) {
         showError('Upload failed', err.message);
@@ -396,6 +650,10 @@
 
     // Default session date to today
     document.getElementById('sessionDate').valueAsDate = new Date();
+
+    // GitHub and OneDrive links (placeholder — updated when workflow completes)
+    document.getElementById('btnGithub').href = 'https://github.com/Brian2169fdsa';
+    document.getElementById('btnOnedrive').href = 'https://manageai-my.sharepoint.com';
   </script>
 </body>
 </html>

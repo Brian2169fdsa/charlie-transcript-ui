@@ -9,17 +9,19 @@ export default async function handler(req, res) {
   const allowed = [
     '/api/charlie/upload-transcript',
     '/api/charlie/extract',
-    '/api/charlie/document-status'
+    '/api/charlie/document-status',
+    '/api/charlie/workflow/start'
   ];
 
-  // document-status is a GET with an ID param
+  // GET endpoints with ID params
   const isStatusPoll = endpoint && endpoint.startsWith('/api/charlie/document-status/');
-  if (!allowed.includes(endpoint) && !isStatusPoll) {
+  const isWorkflowStatus = endpoint && endpoint.startsWith('/api/charlie/workflow/status/');
+  if (!allowed.includes(endpoint) && !isStatusPoll && !isWorkflowStatus) {
     return res.status(400).json({ error: 'Endpoint not allowed' });
   }
 
   try {
-    const isGet = isStatusPoll;
+    const isGet = isStatusPoll || isWorkflowStatus;
     const opts = {
       method: isGet ? 'GET' : 'POST',
       headers: {
