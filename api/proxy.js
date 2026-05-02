@@ -29,6 +29,10 @@ export default async function handler(req, res) {
         'x-charlie-key': CHARLIE_KEY
       }
     };
+    // Never allow autoRun to be set from the frontend
+    if (body && endpoint === '/api/charlie/workflow/start') {
+      delete body.autoRun;
+    }
     if (!isGet && body) opts.body = JSON.stringify(body);
 
     const upstream = await fetch(`${CHARLIE_URL}${endpoint}`, opts);
