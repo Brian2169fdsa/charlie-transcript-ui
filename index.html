@@ -19,7 +19,6 @@
       min-height: 100vh;
     }
 
-    /* ── Header ── */
     .header {
       background: #1E3348;
       display: flex;
@@ -28,34 +27,13 @@
       padding: 0 32px;
       height: 56px;
     }
-    .header-logo {
-      color: #FFFFFF;
-      font-size: 18px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-    }
-    .header-label {
-      color: #7A8B9A;
-      font-size: 13px;
-      font-weight: 500;
-    }
+    .header-logo { color: #FFFFFF; font-size: 18px; font-weight: 700; letter-spacing: 0.5px; }
+    .header-label { color: #7A8B9A; font-size: 13px; font-weight: 500; }
 
-    /* ── Page ── */
     .page { max-width: 680px; margin: 0 auto; padding: 40px 24px 60px; }
+    .page-title { font-size: 22px; font-weight: 700; color: #1E293B; margin-bottom: 6px; }
+    .page-subtitle { font-size: 14px; color: #475569; margin-bottom: 32px; }
 
-    .page-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: #1E293B;
-      margin-bottom: 6px;
-    }
-    .page-subtitle {
-      font-size: 14px;
-      color: #475569;
-      margin-bottom: 32px;
-    }
-
-    /* ── Card ── */
     .card {
       border: 1px solid #E2E6EC;
       border-radius: 10px;
@@ -63,18 +41,9 @@
       box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     }
 
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 700;
-      color: #1E293B;
-      margin-bottom: 6px;
-    }
+    label { display: block; font-size: 13px; font-weight: 700; color: #1E293B; margin-bottom: 6px; }
 
-    input[type="text"],
-    input[type="date"],
-    textarea,
-    select {
+    input[type="text"], input[type="date"], textarea, select {
       width: 100%;
       font-family: 'Montserrat', sans-serif;
       font-weight: 500;
@@ -88,10 +57,7 @@
       transition: border-color 0.15s;
       -webkit-appearance: none;
     }
-    input[type="text"]:focus,
-    input[type="date"]:focus,
-    textarea:focus,
-    select:focus {
+    input[type="text"]:focus, input[type="date"]:focus, textarea:focus, select:focus {
       border-color: #4A8FD6;
     }
 
@@ -102,209 +68,116 @@
       padding-right: 36px;
     }
 
-    textarea {
-      min-height: 240px;
-      resize: vertical;
-      line-height: 1.6;
-    }
-
+    textarea { min-height: 240px; resize: vertical; line-height: 1.6; }
     .field + .field { margin-top: 20px; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .hint { font-size: 12px; color: #7A8B9A; margin-top: 4px; }
 
-    .row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-    }
-    .row-3 {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 16px;
-    }
-
-    .hint {
-      font-size: 12px;
-      color: #7A8B9A;
-      margin-top: 4px;
-    }
-
-    /* ── Button ── */
     .btn-submit {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin-top: 24px;
-      padding: 11px 28px;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 14px;
-      color: #FFFFFF;
-      background: #4A8FD6;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: opacity 0.15s;
+      display: inline-flex; align-items: center; gap: 8px;
+      margin-top: 24px; padding: 11px 28px;
+      font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 14px;
+      color: #FFFFFF; background: #4A8FD6; border: none; border-radius: 10px;
+      cursor: pointer; transition: opacity 0.15s;
     }
     .btn-submit:hover { opacity: 0.9; }
-    .btn-submit:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
     .btn-submit svg { flex-shrink: 0; }
+
+    /* ── Prior Context Panel ── */
+    .context-panel {
+      margin-top: 20px;
+      border: 1px solid #E2E6EC;
+      border-radius: 10px;
+      background: #F5F6F8;
+      overflow: hidden;
+      display: none;
+    }
+    .context-panel.visible { display: block; }
+    .context-toggle {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 12px 16px; cursor: pointer; user-select: none;
+    }
+    .context-toggle-label { font-size: 13px; font-weight: 700; color: #1E293B; }
+    .context-toggle svg { transition: transform 0.15s; }
+    .context-toggle.open svg { transform: rotate(180deg); }
+    .context-body { padding: 0 16px 16px; display: none; }
+    .context-body.open { display: block; }
+    .ctx-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
+    .ctx-label { font-size: 12px; color: #7A8B9A; }
+    .ctx-value { font-size: 13px; font-weight: 500; color: #1E293B; }
+    .ctx-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 6px;
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+    }
+    .ctx-badge-new { background: #EBF3FC; color: #4A8FD6; }
+    .ctx-badge-active { background: #E8F8EE; color: #16A34A; }
+    .ctx-sessions-list { margin-top: 8px; padding: 0; list-style: none; }
+    .ctx-sessions-list li {
+      font-size: 12px; color: #475569; padding: 3px 0;
+      border-bottom: 1px solid #E2E6EC;
+    }
+    .ctx-sessions-list li:last-child { border-bottom: none; }
+    .ctx-loading { font-size: 13px; color: #7A8B9A; padding: 8px 0; }
+    .ctx-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+    .ctx-tag {
+      font-size: 11px; padding: 2px 8px; background: #FFFFFF;
+      border: 1px solid #E2E6EC; border-radius: 6px; color: #475569;
+    }
 
     /* ── Progress ── */
     .progress {
-      margin-top: 28px;
-      border: 1px solid #E2E6EC;
-      border-radius: 10px;
-      padding: 24px 28px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-      display: none;
+      margin-top: 28px; border: 1px solid #E2E6EC; border-radius: 10px;
+      padding: 24px 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); display: none;
     }
     .progress.visible { display: block; }
-
-    .progress-row {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .spinner {
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
-    }
-    .spinner circle {
-      fill: none;
-      stroke-width: 3;
-      stroke-linecap: round;
-    }
+    .progress-row { display: flex; align-items: center; gap: 14px; }
+    .spinner { width: 22px; height: 22px; flex-shrink: 0; }
+    .spinner circle { fill: none; stroke-width: 3; stroke-linecap: round; }
     .spinner .track { stroke: #E2E6EC; }
     .spinner .arc {
-      stroke: #4A8FD6;
-      stroke-dasharray: 50 100;
-      animation: spin 0.8s linear infinite;
-      transform-origin: center;
+      stroke: #4A8FD6; stroke-dasharray: 50 100;
+      animation: spin 0.8s linear infinite; transform-origin: center;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
+    .progress-text { font-size: 14px; font-weight: 500; color: #1E293B; }
+    .progress-timer { font-size: 13px; color: #7A8B9A; margin-top: 10px; }
+    .progress-detail { font-size: 13px; color: #475569; margin-top: 8px; line-height: 1.5; }
+    .progress-meta { font-size: 12px; color: #7A8B9A; margin-top: 6px; }
 
-    .progress-text {
-      font-size: 14px;
-      font-weight: 500;
-      color: #1E293B;
-    }
-
-    .progress-timer {
-      font-size: 13px;
-      color: #7A8B9A;
-      margin-top: 10px;
-    }
-
-    .progress-detail {
-      font-size: 13px;
-      color: #475569;
-      margin-top: 8px;
-      line-height: 1.5;
-    }
-
-    .progress-meta {
-      font-size: 12px;
-      color: #7A8B9A;
-      margin-top: 6px;
-    }
-
-    /* States */
     .progress.success .spinner { display: none; }
     .progress.success .progress-text { color: #16A34A; }
     .progress.success { border-color: #16A34A; background: #E8F8EE; }
-
     .progress.error .spinner { display: none; }
     .progress.error .progress-text { color: #DC2626; }
     .progress.error { border-color: #DC2626; }
-
-    .icon-result {
-      width: 22px;
-      height: 22px;
-      flex-shrink: 0;
-      display: none;
-    }
+    .icon-result { width: 22px; height: 22px; flex-shrink: 0; display: none; }
     .progress.success .icon-result.icon-check { display: block; }
     .progress.error .icon-result.icon-error { display: block; }
 
     /* ── Workflow Status ── */
     .workflow-status {
-      margin-top: 16px;
-      border: 1px solid #E2E6EC;
-      border-radius: 10px;
-      padding: 24px 28px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-      display: none;
+      margin-top: 16px; border: 1px solid #E2E6EC; border-radius: 10px;
+      padding: 24px 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); display: none;
     }
     .workflow-status.visible { display: block; }
-
-    .workflow-status .wf-header {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .workflow-status .wf-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #1E293B;
-    }
-
-    .workflow-status .wf-step {
-      font-size: 14px;
-      font-weight: 500;
-      color: #475569;
-      margin-top: 10px;
-    }
-
-    .workflow-status .wf-timer {
-      font-size: 13px;
-      color: #7A8B9A;
-      margin-top: 6px;
-    }
-
-    .workflow-status .wf-id {
-      font-size: 12px;
-      color: #7A8B9A;
-      margin-top: 8px;
-      word-break: break-all;
-    }
-
-    .workflow-status.wf-complete {
-      border-color: #16A34A;
-      background: #E8F8EE;
-    }
+    .workflow-status .wf-header { display: flex; align-items: center; gap: 14px; }
+    .workflow-status .wf-title { font-size: 14px; font-weight: 700; color: #1E293B; }
+    .workflow-status .wf-step { font-size: 14px; font-weight: 500; color: #475569; margin-top: 10px; }
+    .workflow-status .wf-timer { font-size: 13px; color: #7A8B9A; margin-top: 6px; }
+    .workflow-status .wf-id { font-size: 12px; color: #7A8B9A; margin-top: 8px; word-break: break-all; }
+    .workflow-status.wf-complete { border-color: #16A34A; background: #E8F8EE; }
     .workflow-status.wf-complete .wf-title { color: #16A34A; }
-
-    .workflow-status.wf-error {
-      border-color: #DC2626;
-    }
+    .workflow-status.wf-error { border-color: #DC2626; }
     .workflow-status.wf-error .wf-title { color: #DC2626; }
 
-    /* ── Action Buttons ── */
-    .wf-actions {
-      display: flex;
-      gap: 12px;
-      margin-top: 16px;
-    }
+    .wf-actions { display: flex; gap: 12px; margin-top: 16px; }
     .btn-action {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 20px;
-      font-family: 'Montserrat', sans-serif;
-      font-weight: 700;
-      font-size: 13px;
-      color: #4A8FD6;
-      background: #FFFFFF;
-      border: 1px solid #4A8FD6;
-      border-radius: 10px;
-      cursor: pointer;
-      text-decoration: none;
-      transition: background 0.15s;
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 20px; font-family: 'Montserrat', sans-serif; font-weight: 700; font-size: 13px;
+      color: #4A8FD6; background: #FFFFFF; border: 1px solid #4A8FD6; border-radius: 10px;
+      cursor: pointer; text-decoration: none; transition: background 0.15s;
     }
     .btn-action:hover { background: #EBF3FC; }
     .btn-action svg { flex-shrink: 0; }
@@ -312,23 +185,24 @@
 </head>
 <body>
 
-  <!-- Header -->
   <div class="header">
     <span class="header-logo">Manage AI</span>
     <span class="header-label">Charlie</span>
   </div>
 
-  <!-- Page -->
   <div class="page">
     <h1 class="page-title">Upload Meeting Transcript</h1>
     <p class="page-subtitle">Submit a discovery or alignment session transcript for Charlie to process</p>
 
-    <!-- Form Card -->
     <form id="uploadForm" class="card">
       <div class="row-3">
         <div class="field">
-          <label for="customerName">Customer Name</label>
-          <input type="text" id="customerName" name="customerName" required placeholder="e.g. Acme Corp">
+          <label for="customerSelect">Customer</label>
+          <select id="customerSelect" required>
+            <option value="">-- Select existing customer --</option>
+            <option value="new">+ New Customer</option>
+          </select>
+          <input type="text" id="newCustomerName" placeholder="e.g. Acme Corp" style="display:none; margin-top:8px">
         </div>
         <div class="field">
           <label for="sessionDate">Session Date</label>
@@ -344,6 +218,17 @@
             <option value="Product Meeting">Product Meeting</option>
             <option value="Internal">Internal</option>
           </select>
+        </div>
+      </div>
+
+      <!-- Prior Context Panel -->
+      <div id="contextPanel" class="context-panel">
+        <div id="contextToggle" class="context-toggle open">
+          <span class="context-toggle-label">Prior Context</span>
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="#7A8B9A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div id="contextBody" class="context-body open">
+          <div id="ctxContent"><span class="ctx-loading">Loading context...</span></div>
         </div>
       </div>
 
@@ -364,18 +249,9 @@
     <!-- Extraction Progress -->
     <div id="progress" class="progress">
       <div class="progress-row">
-        <svg class="spinner" viewBox="0 0 24 24">
-          <circle class="track" cx="12" cy="12" r="10"/>
-          <circle class="arc" cx="12" cy="12" r="10"/>
-        </svg>
-        <svg class="icon-result icon-check" viewBox="0 0 22 22" fill="none">
-          <circle cx="11" cy="11" r="11" fill="#16A34A"/>
-          <path d="M6.5 11.5l2.5 2.5 6-6" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-        <svg class="icon-result icon-error" viewBox="0 0 22 22" fill="none">
-          <circle cx="11" cy="11" r="11" fill="#DC2626"/>
-          <path d="M7.5 7.5l7 7M14.5 7.5l-7 7" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <svg class="spinner" viewBox="0 0 24 24"><circle class="track" cx="12" cy="12" r="10"/><circle class="arc" cx="12" cy="12" r="10"/></svg>
+        <svg class="icon-result icon-check" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="11" fill="#16A34A"/><path d="M6.5 11.5l2.5 2.5 6-6" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <svg class="icon-result icon-error" viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="11" fill="#DC2626"/><path d="M7.5 7.5l7 7M14.5 7.5l-7 7" stroke="#FFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <span id="progressText" class="progress-text">Uploading transcript...</span>
       </div>
       <div id="progressTimer" class="progress-timer"></div>
@@ -386,21 +262,18 @@
     <!-- Workflow Status -->
     <div id="workflowStatus" class="workflow-status">
       <div class="wf-header">
-        <svg class="spinner" viewBox="0 0 24 24">
-          <circle class="track" cx="12" cy="12" r="10"/>
-          <circle class="arc" cx="12" cy="12" r="10"/>
-        </svg>
+        <svg class="spinner" viewBox="0 0 24 24"><circle class="track" cx="12" cy="12" r="10"/><circle class="arc" cx="12" cy="12" r="10"/></svg>
         <span id="wfTitle" class="wf-title">Starting workflow...</span>
       </div>
       <div id="wfStep" class="wf-step"></div>
       <div id="wfTimer" class="wf-timer"></div>
       <div id="wfId" class="wf-id"></div>
       <div id="wfActions" class="wf-actions" style="display:none">
-        <a id="btnGithub" class="btn-action" href="#" target="_blank">
+        <a id="btnGithub" class="btn-action" href="https://github.com/Brian2169fdsa" target="_blank">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1C4.13 1 1 4.13 1 8c0 3.1 2.01 5.73 4.79 6.65.35.06.48-.15.48-.34 0-.17-.01-.71-.01-1.29-1.95.42-2.36-.84-2.36-.84-.32-.81-.78-1.03-.78-1.03-.64-.43.05-.43.05-.43.7.05 1.07.72 1.07.72.63 1.07 1.64.76 2.04.58.06-.45.24-.76.44-.93-1.56-.18-3.2-.78-3.2-3.46 0-.76.27-1.39.72-1.88-.07-.18-.31-.89.07-1.85 0 0 .59-.19 1.93.72a6.7 6.7 0 013.5 0c1.34-.91 1.93-.72 1.93-.72.38.96.14 1.67.07 1.85.45.49.72 1.12.72 1.88 0 2.69-1.64 3.28-3.2 3.46.25.22.48.64.48 1.29 0 .93-.01 1.68-.01 1.91 0 .19.13.41.48.34A7.01 7.01 0 0015 8c0-3.87-3.13-7-7-7z" fill="#4A8FD6"/></svg>
           View in GitHub
         </a>
-        <a id="btnOnedrive" class="btn-action" href="#" target="_blank">
+        <a id="btnOnedrive" class="btn-action" href="https://manageai-my.sharepoint.com" target="_blank">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M2 11l3-5h5l3 5H2z" stroke="#4A8FD6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 6L7 3h5l2 3" stroke="#4A8FD6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
           View in OneDrive
         </a>
@@ -409,53 +282,158 @@
   </div>
 
   <script>
-    const POLL_INTERVAL = 3000;
-
-    const form = document.getElementById('uploadForm');
-    const submitBtn = document.getElementById('submitBtn');
-    const progressEl = document.getElementById('progress');
-    const progressText = document.getElementById('progressText');
-    const progressTimer = document.getElementById('progressTimer');
-    const progressDetail = document.getElementById('progressDetail');
-    const progressMeta = document.getElementById('progressMeta');
-
-    const wfEl = document.getElementById('workflowStatus');
-    const wfTitle = document.getElementById('wfTitle');
-    const wfStep = document.getElementById('wfStep');
-    const wfTimer = document.getElementById('wfTimer');
-    const wfId = document.getElementById('wfId');
-    const wfActions = document.getElementById('wfActions');
-
-    let timerInterval = null;
-    let startTime = null;
-    let wfTimerInterval = null;
-    let wfStartTime = null;
-
-    // Workflow step names by number
-    const STEP_NAMES = {
-      1: 'Customer Dossier',
-      2: 'Feasibility Analysis',
-      3: 'Gap Report',
-      4: 'AI Vision',
-      5: 'Opportunity Roadmap',
-      6: 'Signal Synthesis',
-      7: 'Process Mapping',
-      8: 'Meeting Prep',
-      9: 'Action Item Capture',
-      10: 'Prototype Readiness',
-      11: 'Prototype Brief',
-      12: 'Prototype Brief Review',
-      13: 'Assemble Brief',
-      14: 'Confidence Scoring',
-      15: 'Scope Freeze',
-      16: 'Handoff to FRIDAY'
+    var POLL_INTERVAL = 3000;
+    var STAGE_MAP = {
+      'Discovery Call': 'discovery',
+      'Alignment Session': 'alignment',
+      'Prototype Review': 'prototype_review',
+      'Go-to-Market': 'gtm',
+      'Product Meeting': 'product',
+      'Internal': 'internal'
     };
 
+    var form = document.getElementById('uploadForm');
+    var submitBtn = document.getElementById('submitBtn');
+    var customerSelect = document.getElementById('customerSelect');
+    var newCustomerInput = document.getElementById('newCustomerName');
+    var contextPanel = document.getElementById('contextPanel');
+    var contextToggle = document.getElementById('contextToggle');
+    var contextBody = document.getElementById('contextBody');
+    var ctxContent = document.getElementById('ctxContent');
+    var progressEl = document.getElementById('progress');
+    var progressText = document.getElementById('progressText');
+    var progressTimer = document.getElementById('progressTimer');
+    var progressDetail = document.getElementById('progressDetail');
+    var progressMeta = document.getElementById('progressMeta');
+    var wfEl = document.getElementById('workflowStatus');
+    var wfTitle = document.getElementById('wfTitle');
+    var wfStep = document.getElementById('wfStep');
+    var wfTimer = document.getElementById('wfTimer');
+    var wfId = document.getElementById('wfId');
+    var wfActions = document.getElementById('wfActions');
+
+    var timerInterval = null, startTime = null;
+    var wfTimerInterval = null, wfStartTime = null;
+    var selectedCustomerId = null;
+    var selectedClientName = '';
+    var currentSessionId = null;
+
+    var STEP_NAMES = {
+      1:'Customer Dossier',2:'Feasibility Analysis',3:'Gap Report',4:'AI Vision',
+      5:'Opportunity Roadmap',6:'Signal Synthesis',7:'Process Mapping',8:'Meeting Prep',
+      9:'Action Item Capture',10:'Prototype Readiness',11:'Prototype Brief',
+      12:'Prototype Brief Review',13:'Assemble Brief',14:'Confidence Scoring',
+      15:'Scope Freeze',16:'Handoff to FRIDAY'
+    };
+
+    // ── Proxy helper ──
+    async function proxy(endpoint, body) {
+      var res = await fetch('/api/proxy', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ endpoint: endpoint, body: body })
+      });
+      var data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Request failed (' + res.status + ')');
+      return data;
+    }
+
+    // ── Load customers into dropdown ──
+    async function loadCustomers() {
+      try {
+        var data = await proxy('/api/charlie/customers');
+        var customers = data.customers || [];
+        customers.forEach(function(c) {
+          var opt = document.createElement('option');
+          opt.value = c.customer_id;
+          opt.textContent = c.client_name + (c.engagement_stage && c.engagement_stage !== 'new' ? ' (' + c.engagement_stage + ')' : '');
+          opt.dataset.clientName = c.client_name;
+          customerSelect.appendChild(opt);
+        });
+      } catch (e) {
+        // Silently fail — user can still use "New Customer"
+      }
+    }
+
+    // ── Customer selector change ──
+    customerSelect.addEventListener('change', function() {
+      var val = customerSelect.value;
+      if (val === 'new') {
+        newCustomerInput.style.display = 'block';
+        newCustomerInput.required = true;
+        contextPanel.classList.remove('visible');
+        selectedCustomerId = null;
+        selectedClientName = '';
+      } else if (val) {
+        newCustomerInput.style.display = 'none';
+        newCustomerInput.required = false;
+        selectedCustomerId = val;
+        var opt = customerSelect.options[customerSelect.selectedIndex];
+        selectedClientName = opt.dataset.clientName || opt.textContent;
+        loadContext(val);
+      } else {
+        newCustomerInput.style.display = 'none';
+        newCustomerInput.required = false;
+        contextPanel.classList.remove('visible');
+        selectedCustomerId = null;
+        selectedClientName = '';
+      }
+    });
+
+    // ── Context toggle ──
+    contextToggle.addEventListener('click', function() {
+      contextToggle.classList.toggle('open');
+      contextBody.classList.toggle('open');
+    });
+
+    // ── Load prior context ──
+    async function loadContext(customerId) {
+      contextPanel.classList.add('visible');
+      ctxContent.innerHTML = '<span class="ctx-loading">Loading context...</span>';
+      try {
+        var ctx = await proxy('/api/charlie/customer/' + customerId + '/context');
+        var stageBadge = ctx.engagement_stage === 'new'
+          ? '<span class="ctx-badge ctx-badge-new">' + ctx.engagement_stage + '</span>'
+          : '<span class="ctx-badge ctx-badge-active">' + ctx.engagement_stage + '</span>';
+
+        var html = '<div class="ctx-row"><span class="ctx-label">Customer</span><span class="ctx-value">' + (ctx.client_name || 'Unknown') + ' ' + stageBadge + '</span></div>';
+        html += '<div class="ctx-row"><span class="ctx-label">Prior sessions</span><span class="ctx-value">' + ctx.total_sessions + '</span></div>';
+        html += '<div class="ctx-row"><span class="ctx-label">Facts on file</span><span class="ctx-value">' + ctx.total_facts + '</span></div>';
+        html += '<div class="ctx-row"><span class="ctx-label">Dossier completeness</span><span class="ctx-value">' + ctx.dossier_completeness + '%</span></div>';
+
+        if (ctx.known_stakeholders && ctx.known_stakeholders.length > 0) {
+          html += '<div class="ctx-row"><span class="ctx-label">Known stakeholders</span><div class="ctx-tags">';
+          ctx.known_stakeholders.forEach(function(s) { html += '<span class="ctx-tag">' + s + '</span>'; });
+          html += '</div></div>';
+        }
+
+        if (ctx.known_systems && ctx.known_systems.length > 0) {
+          html += '<div class="ctx-row"><span class="ctx-label">Known systems</span><div class="ctx-tags">';
+          ctx.known_systems.forEach(function(s) { html += '<span class="ctx-tag">' + s + '</span>'; });
+          html += '</div></div>';
+        }
+
+        if (ctx.prior_sessions && ctx.prior_sessions.length > 0) {
+          var last = ctx.prior_sessions[ctx.prior_sessions.length - 1];
+          html += '<div class="ctx-row"><span class="ctx-label">Last session</span><span class="ctx-value">' + new Date(last.created_at).toLocaleDateString() + ' — ' + last.session_type + '</span></div>';
+          html += '<ul class="ctx-sessions-list">';
+          ctx.prior_sessions.forEach(function(s) {
+            html += '<li>#' + s.session_number + ' ' + s.session_type + ' — ' + new Date(s.created_at).toLocaleDateString() + (s.facts_extracted ? ' (' + s.facts_extracted + ' facts)' : '') + '</li>';
+          });
+          html += '</ul>';
+        }
+
+        ctxContent.innerHTML = html;
+      } catch (e) {
+        ctxContent.innerHTML = '<span class="ctx-loading">Could not load context</span>';
+      }
+    }
+
+    // ── Timer helpers ──
     function updateTimer() {
       var elapsed = Math.floor((Date.now() - startTime) / 1000);
       progressTimer.textContent = 'Elapsed: ' + elapsed + 's';
     }
-
     function updateWfTimer() {
       var elapsed = Math.floor((Date.now() - wfStartTime) / 1000);
       var min = Math.floor(elapsed / 60);
@@ -470,43 +448,27 @@
       progressDetail.textContent = detail || '';
       progressMeta.textContent = meta || '';
     }
-
     function showSuccess(msg, detail, meta) {
-      clearInterval(timerInterval);
-      updateTimer();
+      clearInterval(timerInterval); updateTimer();
       progressEl.classList.add('success');
       progressText.textContent = msg;
       progressDetail.textContent = detail || '';
       progressMeta.textContent = meta || '';
     }
-
     function showError(msg, detail) {
-      clearInterval(timerInterval);
-      updateTimer();
+      clearInterval(timerInterval); updateTimer();
       progressEl.classList.add('error');
       progressText.textContent = msg;
       progressDetail.textContent = detail || '';
       submitBtn.disabled = false;
     }
 
-    // All API calls go through the Vercel serverless proxy
-    async function proxy(endpoint, body) {
-      var res = await fetch('/api/proxy', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ endpoint: endpoint, body: body })
-      });
-      var data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Request failed (' + res.status + ')');
-      return data;
-    }
-
-    function pollDocStatus(documentId, customerName, stage) {
+    // ── Poll extraction status ──
+    function pollDocStatus(documentId, customerId, clientName, sessionType, stage) {
       var poll = setInterval(async function() {
         try {
           var data = await proxy('/api/charlie/document-status/' + documentId);
           var status = data.extraction_status || 'unknown';
-
           if (status === 'complete') {
             clearInterval(poll);
             showSuccess(
@@ -514,8 +476,8 @@
               (data.facts || 0) + ' facts and ' + (data.actions || 0) + ' action items extracted',
               'Stage: ' + stage
             );
-            // Auto-start workflow
-            startWorkflow(customerName);
+            // Create session then start workflow
+            createSessionAndStartWorkflow(customerId, clientName, sessionType);
           } else if (status === 'error' || status === 'failed') {
             clearInterval(poll);
             showError('Extraction failed', data.error || 'An error occurred during processing');
@@ -528,7 +490,38 @@
       }, POLL_INTERVAL);
     }
 
-    async function startWorkflow(customerName) {
+    // ── Create session then start workflow ──
+    async function createSessionAndStartWorkflow(customerId, clientName, sessionType) {
+      var sessionDate = document.getElementById('sessionDate').value;
+      try {
+        // Create session
+        showProgress('Creating session record...', '', '');
+        var sessionResult = await proxy('/api/charlie/customer/session/start', {
+          customer_id: customerId,
+          client_name: clientName,
+          session_type: sessionType,
+          source: 'manual_upload',
+          meeting_date: sessionDate ? new Date(sessionDate).toISOString() : new Date().toISOString()
+        });
+        currentSessionId = sessionResult.session_id;
+        var sessionNum = sessionResult.session_number;
+        var priorCount = sessionResult.prior_context_summary.total_sessions;
+
+        showSuccess(
+          'Session ' + sessionNum + ' created',
+          'Session ' + sessionNum + ' — ' + sessionType + ' | ' + priorCount + ' prior sessions',
+          sessionResult.message
+        );
+
+        // Start workflow with session_id
+        startWorkflow(customerId, clientName, currentSessionId);
+      } catch (err) {
+        showError('Session creation failed', err.message);
+      }
+    }
+
+    // ── Start workflow ──
+    async function startWorkflow(customerId, clientName, sessionId) {
       wfEl.classList.add('visible');
       wfEl.classList.remove('wf-complete', 'wf-error');
       wfTitle.textContent = 'Starting workflow...';
@@ -539,20 +532,21 @@
       updateWfTimer();
 
       try {
-        var result = await proxy('/api/charlie/workflow/start', {
-          customerId: '882d9329-4e05-4467-8773-27dc2ce5db48',
-          clientName: customerName,
+        var payload = {
+          customerId: customerId,
+          clientName: clientName,
           themeId: null,
           mode: 'roadmap-first'
-        });
+        };
+        if (sessionId) payload.session_id = sessionId;
 
+        var result = await proxy('/api/charlie/workflow/start', payload);
         var workflowId = result.workflowId;
         if (!workflowId) throw new Error('No workflowId returned');
 
         wfTitle.textContent = 'Workflow running';
         wfId.textContent = 'ID: ' + workflowId;
         pollWorkflowStatus(workflowId);
-
       } catch (err) {
         clearInterval(wfTimerInterval);
         wfEl.classList.add('wf-error');
@@ -562,16 +556,14 @@
       }
     }
 
+    // ── Poll workflow status ──
     function pollWorkflowStatus(workflowId) {
       var poll = setInterval(async function() {
         try {
           var data = await proxy('/api/charlie/workflow/status/' + workflowId);
           var status = data.status || 'UNKNOWN';
-
           if (status === 'COMPLETED') {
-            clearInterval(poll);
-            clearInterval(wfTimerInterval);
-            updateWfTimer();
+            clearInterval(poll); clearInterval(wfTimerInterval); updateWfTimer();
             wfEl.classList.add('wf-complete');
             wfEl.querySelector('.spinner').style.display = 'none';
             wfTitle.textContent = 'Workflow complete';
@@ -579,16 +571,13 @@
             wfActions.style.display = 'flex';
             submitBtn.disabled = false;
           } else if (status === 'FAILED' || status === 'TERMINATED' || status === 'CANCELLED') {
-            clearInterval(poll);
-            clearInterval(wfTimerInterval);
-            updateWfTimer();
+            clearInterval(poll); clearInterval(wfTimerInterval); updateWfTimer();
             wfEl.classList.add('wf-error');
             wfEl.querySelector('.spinner').style.display = 'none';
             wfTitle.textContent = 'Workflow ' + status.toLowerCase();
             submitBtn.disabled = false;
           } else {
             wfTitle.textContent = 'Workflow running';
-            // Try to parse step info from status if available
             if (data.currentStep) {
               var stepName = STEP_NAMES[data.currentStep] || 'Step ' + data.currentStep;
               wfStep.textContent = 'Step ' + data.currentStep + ' of 16: ' + stepName;
@@ -602,58 +591,79 @@
       }, POLL_INTERVAL);
     }
 
+    // ── Form submit ──
     form.addEventListener('submit', async function(e) {
       e.preventDefault();
 
-      var customerName = document.getElementById('customerName').value.trim();
+      var customerVal = customerSelect.value;
+      var clientName = '';
+      var customerId = null;
+
+      if (customerVal === 'new') {
+        clientName = newCustomerInput.value.trim();
+        if (!clientName) return;
+      } else if (customerVal) {
+        customerId = customerVal;
+        var opt = customerSelect.options[customerSelect.selectedIndex];
+        clientName = opt.dataset.clientName || opt.textContent;
+      } else {
+        return;
+      }
+
       var sessionDate = document.getElementById('sessionDate').value;
       var stage = document.getElementById('stage').value;
+      var sessionType = STAGE_MAP[stage] || 'discovery';
       var transcript = document.getElementById('transcript').value.trim();
 
-      if (!customerName || !sessionDate || !transcript) return;
+      if (!sessionDate || !transcript) return;
 
       submitBtn.disabled = true;
       startTime = Date.now();
       timerInterval = setInterval(updateTimer, 1000);
       updateTimer();
 
-      // Reset workflow section
       wfEl.classList.remove('visible', 'wf-complete', 'wf-error');
-      wfEl.querySelector('.spinner').style.display = '';
+      var wfSpinner = wfEl.querySelector('.spinner');
+      if (wfSpinner) wfSpinner.style.display = '';
 
       showProgress('Uploading transcript...', 'Inserting document record', 'Stage: ' + stage);
 
       try {
-        // Step 1: Insert transcript into knowledge_documents
+        // Step 1: Upload transcript
         var insertResult = await proxy('/api/charlie/upload-transcript', {
-          customer_name: customerName,
+          customer_name: clientName,
           session_date: sessionDate,
           content: transcript
         });
 
         var documentId = insertResult.document_id;
+        // Use returned customer_id if we didn't have one (new customer)
+        if (!customerId && insertResult.customer_id) {
+          customerId = insertResult.customer_id;
+        }
+        // For new customers without an ID, use a placeholder
+        if (!customerId) {
+          customerId = '00000000-0000-0000-0000-000000000000';
+        }
         if (!documentId) throw new Error('No document_id returned from upload');
 
         showProgress('Document created', 'Starting extraction...', 'Stage: ' + stage);
 
-        // Step 2: Call extract with the returned document_id
+        // Step 2: Extract
         await proxy('/api/charlie/extract', { document_id: documentId });
 
-        // Step 3: Poll for extraction completion, then auto-start workflow
+        // Step 3: Poll extraction, then session + workflow
         showProgress('Processing transcript...', 'Charlie is extracting facts and action items', 'Stage: ' + stage);
-        pollDocStatus(documentId, customerName, stage);
+        pollDocStatus(documentId, customerId, clientName, sessionType, stage);
 
       } catch (err) {
         showError('Upload failed', err.message);
       }
     });
 
-    // Default session date to today
+    // ── Init ──
     document.getElementById('sessionDate').valueAsDate = new Date();
-
-    // GitHub and OneDrive links (placeholder — updated when workflow completes)
-    document.getElementById('btnGithub').href = 'https://github.com/Brian2169fdsa';
-    document.getElementById('btnOnedrive').href = 'https://manageai-my.sharepoint.com';
+    loadCustomers();
   </script>
 </body>
 </html>

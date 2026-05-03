@@ -10,18 +10,24 @@ export default async function handler(req, res) {
     '/api/charlie/upload-transcript',
     '/api/charlie/extract',
     '/api/charlie/document-status',
-    '/api/charlie/workflow/start'
+    '/api/charlie/workflow/start',
+    '/api/charlie/customers',
+    '/api/charlie/customer/session/start'
   ];
 
   // GET endpoints with ID params
   const isStatusPoll = endpoint && endpoint.startsWith('/api/charlie/document-status/');
   const isWorkflowStatus = endpoint && endpoint.startsWith('/api/charlie/workflow/status/');
-  if (!allowed.includes(endpoint) && !isStatusPoll && !isWorkflowStatus) {
+  const isCustomerContext = endpoint && /^\/api\/charlie\/customer\/[^/]+\/context$/.test(endpoint);
+  const isCustomerSessions = endpoint && /^\/api\/charlie\/customer\/[^/]+\/sessions$/.test(endpoint);
+  const isSessionUpdate = endpoint && /^\/api\/charlie\/customer\/session\/[^/]+\/update$/.test(endpoint);
+
+  if (!allowed.includes(endpoint) && !isStatusPoll && !isWorkflowStatus && !isCustomerContext && !isCustomerSessions && !isSessionUpdate) {
     return res.status(400).json({ error: 'Endpoint not allowed' });
   }
 
   try {
-    const isGet = isStatusPoll || isWorkflowStatus;
+    const isGet = isStatusPoll || isWorkflowStatus || isCustomerContext || isCustomerSessions || endpoint === '/api/charlie/customers';
     const opts = {
       method: isGet ? 'GET' : 'POST',
       headers: {
